@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irregular Verb Conjugation Practice</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Load Inter Font, Noto Sans KR, SC, JP for multilingual support */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Inter', 'Noto Sans KR', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
+        }
+
+        /* Styles for 3D flip effect */
+        .card-container {
+            perspective: 1000px; /* Perspective for 3D effect */
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+        }
+
+        /* Flip the card 180 degrees on the Y-axis when 'is-flipped' class is added */
+        .card-container.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden; /* Hide the back side */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 1.5rem; /* 24px */
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            padding: 1.5rem; /* Adjusted padding for more content */
+        }
+
+        .card-front {
+            background-color: #DBEAFE; /* Blue-100 for clarity */
+            color: #111827; /* gray-900 */
+        }
+
+        .card-back {
+            background-color: #1F2937; /* Dark gray for high contrast */
+            color: white;
+            transform: rotateY(180deg); /* Pre-rotate the back side */
+            padding: 2rem; /* Ensure generous padding on the back */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col justify-center items-center p-4">
+
+    <div class="w-full max-w-lg mx-auto">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">
+            Irregular Verb Conjugation Practice
+            <span class="block text-base font-normal text-gray-500">(불규칙 동사의 변형형 연습)</span>
+        </h1>
+
+        <!-- Flashcard Container -->
+        <div id="flashcard-container" class="card-container w-full h-80 md:h-96 rounded-3xl cursor-pointer">
+            <div id="flashcard-inner" class="card-inner w-full h-full">
+                
+                <!-- Card Front (Original Verb + Translations) -->
+                <div class="card-front">
+                    <div id="card-front-content" class="text-center w-full space-y-4">
+                        <p class="text-lg font-medium text-blue-800">Original Verb (Infinitive)</p>
+                        <h2 id="front-english-word" class="text-5xl md:text-6xl font-extrabold text-blue-900 break-all">
+                            AWAKE
+                        </h2>
+                        <div class="mt-6 space-y-2 text-xl text-left mx-auto max-w-xs">
+                            <p><span class="font-semibold">🇰🇷 Korean:</span> <span id="korean-word"></span></p>
+                            <p><span class="font-semibold">🇨🇳 Mandarin:</span> <span id="mandarin-word"></span></p>
+                            <p><span class="font-semibold">🇯🇵 Japanese:</span> <span id="japanese-word"></span></p>
+                        </div>
+                        <p class="text-gray-600 mt-4 text-sm text-center">
+                            (Click to reveal Simple Past and Past Participle forms)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card Back (Verb Conjugations - Multi-line, Lowercase) -->
+                <div class="card-back">
+                    <div id="card-back-content" class="text-center flex flex-col justify-center items-center h-full space-y-4">
+                        
+                        <!-- Original Verb -->
+                        <p class="text-lg font-medium text-gray-300">Original Verb</p>
+                        <h2 id="back-original" class="text-3xl md:text-4xl font-extrabold text-white break-all"></h2>
+                        
+                        <div class="h-px w-1/2 bg-gray-600"></div> <!-- Separator -->
+
+                        <!-- Simple Past -->
+                        <p class="text-lg font-medium text-gray-300">Simple Past</p>
+                        <h2 id="back-past" class="text-3xl md:text-4xl font-extrabold text-white break-all"></h2>
+                        
+                        <div class="h-px w-1/2 bg-gray-600"></div> <!-- Separator -->
+
+                        <!-- Past Participle -->
+                        <p class="text-lg font-medium text-gray-300">Past Participle</p>
+                        <h2 id="back-pp" class="text-3xl md:text-4xl font-extrabold text-white break-all"></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Counter -->
+        <div id="card-counter" class="text-center text-gray-600 mt-4 text-lg font-medium">
+            Card 1 / 87
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-6 space-x-4">
+            <button id="prev-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-lg shadow transition-colors duration-200">
+                Previous
+            </button>
+            <button id="next-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow transition-colors duration-200">
+                Next
+            </button>
+        </div>
+
+        <!-- Shuffle Button -->
+        <div class="mt-4">
+            <button id="shuffle-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow transition-colors duration-200">
+                Shuffle Cards
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Data structure: { english: Original, past: Simple Past, pp: Past Participle, korean: Korean Meaning, mandarin: Chinese (Pinyin), japanese: Japanese (Romanized) }
+        const vocabulary = [
+            { english: "awake", past: "awoke (awaked)", pp: "awoken (awaked)", korean: "깨어나다", mandarin: "醒来 (xǐng lái)", japanese: "目覚める (mezameru)" },
+            { english: "be (am/is/are)", past: "was, were", pp: "been", korean: "이다, 있다", mandarin: "是 (shì)", japanese: "である (de aru)" },
+            { english: "bear", past: "bore", pp: "born, borne", korean: "낳다, 참다", mandarin: "承受 (chéng shòu)", japanese: "耐える (taeru)" },
+            { english: "beat", past: "beat", pp: "beat, beaten", korean: "치다, 이기다", mandarin: "打 (dǎ)", japanese: "打つ (utsu)" },
+            { english: "become", past: "became", pp: "become", korean: "~이 되다", mandarin: "成为 (chéng wéi)", japanese: "になる (ni naru)" },
+            { english: "begin", past: "began", pp: "begun", korean: "시작하다", mandarin: "开始 (kāi shǐ)", japanese: "始める (hajimeru)" },
+            { english: "bend", past: "bent", pp: "bent", korean: "구부리다", mandarin: "弯曲 (wān qū)", japanese: "曲げる (mageru)" },
+            { english: "bet", past: "bet (betted)", pp: "bet (betted)", korean: "내기하다", mandarin: "打赌 (dǎ dǔ)", japanese: "賭ける (kakeru)" },
+            { english: "bite", past: "bit", pp: "bit", korean: "물다", mandarin: "咬 (yǎo)", japanese: "噛む (kamu)" },
+            { english: "bleed", past: "bled", pp: "bled", korean: "피 흘리다", mandarin: "流血 (liú xuè)", japanese: "出血する (shukketsu suru)" },
+            { english: "bless", past: "blest (blessed)", pp: "blest (blessed)", korean: "축복하다", mandarin: "祝福 (zhù fú)", japanese: "祝福する (shukufuku suru)" },
+            { english: "blow", past: "blew", pp: "blown", korean: "불다", mandarin: "吹 (chuī)", japanese: "吹く (fuku)" },
+            { english: "break", past: "broke", pp: "broken", korean: "깨다, 부수다", mandarin: "打破 (dǎ pò)", japanese: "壊す (kowasu)" },
+            { english: "breed", past: "bred", pp: "bred", korean: "기르다, 번식하다", mandarin: "繁殖 (fán zhí)", japanese: "繁殖する (hanshoku suru)" },
+            { english: "bring", past: "brought", pp: "brought", korean: "가져오다", mandarin: "带来 (dài lái)", japanese: "持って来る (motte kuru)" },
+            { english: "broadcast", past: "broadcast (broadcasted)", pp: "broadcast (broadcasted)", korean: "방송하다", mandarin: "广播 (guǎng bō)", japanese: "放送する (hōsō suru)" },
+            { english: "build", past: "built", pp: "built", korean: "짓다, 건설하다", mandarin: "建造 (jiàn zào)", japanese: "建てる (tateru)" },
+            { english: "burn", past: "burnt (burned)", pp: "burnt (burned)", korean: "타다, 태우다", mandarin: "燃烧 (rán shāo)", japanese: "燃やす (moyasu)" },
+            { english: "burst", past: "burst", pp: "burst", korean: "터지다", mandarin: "爆裂 (bào liè)", japanese: "破裂する (haretsu suru)" },
+            { english: "buy", past: "bought", pp: "bought", korean: "사다", mandarin: "买 (mǎi)", japanese: "買う (kau)" },
+            { english: "can", past: "could", pp: "", korean: "~할 수 있다", mandarin: "能 (néng)", japanese: "できる (dekiru)" },
+            { english: "cast", past: "cast", pp: "cast", korean: "던지다, 배역을 정하다", mandarin: "投掷 (tóu zhì)", japanese: "投げる (nageru)" },
+            { english: "catch", past: "caught", pp: "caught", korean: "잡다", mandarin: "抓住 (zhuā zhù)", japanese: "捕まえる (tsukamaeru)" },
+            { english: "choose", past: "chose", pp: "chosen", korean: "선택하다", mandarin: "选择 (xuǎn zé)", japanese: "選ぶ (erabu)" },
+            { english: "come", past: "came", pp: "come", korean: "오다", mandarin: "来 (lái)", japanese: "来る (kuru)" },
+            { english: "cost", past: "cost", pp: "cost", korean: "비용이 들다", mandarin: "花费 (huā fèi)", japanese: "費用がかかる (hiyō ga kakaru)" },
+            { english: "creep", past: "crept", pp: "crept", korean: "살금살금 움직이다", mandarin: "爬行 (pá xíng)", japanese: "忍び寄る (shinobiyoru)" },
+            { english: "cut", past: "cut", pp: "cut", korean: "자르다", mandarin: "切 (qiè)", japanese: "切る (kiru)" },
+            { english: "deal", past: "dealt", pp: "dealt", korean: "다루다, 거래하다", mandarin: "处理 (chǔ lǐ)", japanese: "扱う (atsukau)" },
+            
+            // Irregular Verbs 2
+            { english: "dig", past: "dug", pp: "dug", korean: "파다", mandarin: "挖 (wā)", japanese: "掘る (horu)" },
+            { english: "do", past: "did", pp: "done", korean: "하다", mandarin: "做 (zuò)", japanese: "する (suru)" },
+            { english: "draw", past: "drew", pp: "drawn", korean: "그리다", mandarin: "画 (huà)", japanese: "描く (kaku)" },
+            { english: "dream", past: "dreamt (dreamed)", pp: "dreamt (dreamed)", korean: "꿈꾸다", mandarin: "梦想 (mèng xiǎng)", japanese: "夢を見る (yume o miru)" },
+            { english: "drink", past: "drank", pp: "drunk", korean: "마시다", mandarin: "喝 (hē)", japanese: "飲む (nomu)" },
+            { english: "drive", past: "drove", pp: "driven", korean: "운전하다", mandarin: "驾驶 (jià shǐ)", japanese: "運転する (unten suru)" },
+            { english: "eat", past: "ate", pp: "eaten", korean: "먹다", mandarin: "吃 (chī)", japanese: "食べる (taberu)" },
+            { english: "fall", past: "fell", pp: "fallen", korean: "떨어지다", mandarin: "落下 (luò xià)", japanese: "落ちる (ochiru)" },
+            { english: "feed", past: "fed", pp: "fed", korean: "먹이다", mandarin: "喂养 (wèi yǎng)", japanese: "餌をやる (esa o yaru)" },
+            { english: "feel", past: "felt", pp: "felt", korean: "느끼다", mandarin: "感觉 (gǎn jué)", japanese: "感じる (kanjiru)" },
+            { english: "fight", past: "fought", pp: "fought", korean: "싸우다", mandarin: "打架 (dǎ jià)", japanese: "戦う (tatakau)" },
+            { english: "find", past: "found", pp: "found", korean: "찾다", mandarin: "发现 (fā xiàn)", japanese: "見つける (mitsukeru)" },
+            { english: "flee", past: "fled", pp: "fled", korean: "도망치다", mandarin: "逃跑 (táo pǎo)", japanese: "逃げる (nigeru)" },
+            { english: "fly", past: "flew", pp: "flown", korean: "날다", mandarin: "飞 (fēi)", japanese: "飛ぶ (tobi)" },
+            { english: "forbid", past: "forbade", pp: "forbidden (forbid)", korean: "금지하다", mandarin: "禁止 (jìn zhǐ)", japanese: "禁じる (kinjiru)" },
+            { english: "forecast", past: "forecast (forecasted)", pp: "forecast (forecasted)", korean: "예보하다", mandarin: "预测 (yù cè)", japanese: "予測する (yosoku suru)" },
+            { english: "forget", past: "forgot", pp: "forgotten", korean: "잊다", mandarin: "忘记 (wàng jì)", japanese: "忘れる (wasureru)" },
+            { english: "freeze", past: "froze", pp: "frozen", korean: "얼다", mandarin: "结冰 (jié bīng)", japanese: "凍る (kōru)" },
+            { english: "get", past: "got", pp: "gotten", korean: "얻다, 받다", mandarin: "得到 (dé dào)", japanese: "得る (eru)" },
+            { english: "give", past: "gave", pp: "given", korean: "주다", mandarin: "给 (gěi)", japanese: "与える (ataeru)" },
+            { english: "go", past: "went", pp: "gone", korean: "가다", mandarin: "去 (qù)", japanese: "行く (iku)" },
+            { english: "grow", past: "grew", pp: "grown", korean: "자라다, 성장하다", mandarin: "成长 (chéng zhǎng)", japanese: "成長する (seichō suru)" },
+            { english: "hang", past: "hung", pp: "hung", korean: "걸다", mandarin: "悬挂 (xuán guà)", japanese: "掛ける (kakeru)" },
+            { english: "have", past: "had", pp: "had", korean: "가지다", mandarin: "有 (yǒu)", japanese: "持つ (motsu)" },
+            { english: "hear", past: "heard", pp: "heard", korean: "듣다", mandarin: "听 (tīng)", japanese: "聞く (kiku)" },
+            { english: "hide", past: "hid", pp: "hidden (hid)", korean: "숨기다", mandarin: "隐藏 (yǐn cáng)", japanese: "隠す (kakusu)" },
+            { english: "hit", past: "hit", pp: "hit", korean: "치다", mandarin: "打 (dǎ)", japanese: "打つ (utsu)" },
+            { english: "hold", past: "held", pp: "held", korean: "잡다, 유지하다", mandarin: "抓住 (zhuā zhù)", japanese: "持つ (motsu)" },
+            { english: "hurt", past: "hurt", pp: "hurt", korean: "다치게 하다", mandarin: "伤害 (shāng hài)", japanese: "伤つける (kizutsukeru)" },
+            
+            // Irregular Verbs 3
+            { english: "keep", past: "kept", pp: "kept", korean: "유지하다", mandarin: "保持 (bǎo chí)", japanese: "保つ (tamotsu)" },
+            { english: "know", past: "knew", pp: "known", korean: "알다", mandarin: "知道 (zhī dào)", japanese: "知る (shiru)" },
+            { english: "lay", past: "laid", pp: "laid", korean: "놓다, 깔다", mandarin: "放置 (fàng zhì)", japanese: "置く (oku)" },
+            { english: "lead", past: "led", pp: "led", korean: "이끌다", mandarin: "领导 (lǐng dǎo)", japanese: "導く (michibiku)" },
+            { english: "lean", past: "leant (leaned)", pp: "leant (leaned)", korean: "기울이다", mandarin: "倾斜 (qīng xié)", japanese: "傾ける (katamukeru)" },
+            { english: "leap", past: "leapt (leaped)", pp: "leapt (leaped)", korean: "뛰어넘다", mandarin: "跳跃 (tiào yuè)", japanese: "跳ぶ (tobu)" },
+            { english: "learn", past: "learnt (learned)", pp: "learnt (learned)", korean: "배우다", mandarin: "学习 (xué xí)", japanese: "学ぶ (manabu)" },
+            { english: "leave", past: "left", pp: "left", korean: "떠나다, 남기다", mandarin: "离开 (lí kāi)", japanese: "去る (saru)" },
+            { english: "lend", past: "lent", pp: "lent", korean: "빌려주다", mandarin: "借出 (jiè chū)", japanese: "貸す (kasu)" },
+            { english: "let", past: "let", pp: "let", korean: "허락하다", mandarin: "让 (ràng)", japanese: "させる (saseru)" },
+            { english: "lie", past: "lay", pp: "lain", korean: "눕다", mandarin: "躺 (tǎng)", japanese: "横たわる (yokotawaru)" },
+            { english: "light", past: "lit (lighted)", pp: "lit (lighted)", korean: "불을 붙이다", mandarin: "点燃 (diǎn rán)", japanese: "点ける (tsukeru)" },
+            { english: "lose", past: "lost", pp: "lost", korean: "잃다", mandarin: "失去 (shī qù)", japanese: "失う (ushinau)" },
+            { english: "make", past: "made", pp: "made", korean: "만들다", mandarin: "制造 (zhì zào)", japanese: "作る (tsukuru)" },
+            { english: "may", past: "might", pp: "", korean: "~일지도 모른다", mandarin: "可能 (kě néng)", japanese: "かもしれない (kamoshirenai)" },
+            { english: "mean", past: "meant", pp: "meant", korean: "의미하다", mandarin: "意思 (yì sī)", japanese: "意味する (imi suru)" },
+            { english: "meet", past: "met", pp: "met", korean: "만나다", mandarin: "见面 (jiàn miàn)", japanese: "会う (au)" },
+            { english: "pay", past: "paid", pp: "paid", korean: "지불하다", mandarin: "支付 (zhī fù)", japanese: "支払う (shiharau)" },
+            { english: "put", past: "put", pp: "put", korean: "놓다", mandarin: "放 (fàng)", japanese: "置く (oku)" },
+            { english: "quit", past: "quit (quitted)", pp: "quit (quitted)", korean: "그만두다", mandarin: "退出 (tuì chū)", japanese: "やめる (yameru)" },
+            { english: "read", past: "read", pp: "read", korean: "읽다", mandarin: "阅读 (yuè dú)", japanese: "読む (yomu)" },
+            { english: "rid", past: "rid (ridded)", pp: "rid (ridded)", korean: "제거하다", mandarin: "摆脱 (bǎi tuō)", japanese: "取り除く (torinozoku)" },
+            { english: "ride", past: "rode", pp: "ridden", korean: "타다", mandarin: "骑 (qí)", japanese: "乗る (noru)" },
+            { english: "ring", past: "rang", pp: "rung", korean: "울리다, 전화하다", mandarin: "响铃 (xiǎng líng)", japanese: "鳴らす (narasu)" },
+            { english: "rise", past: "rose", pp: "risen", korean: "오르다", mandarin: "上升 (shàng shēng)", japanese: "上がる (agaru)" },
+            { english: "run", past: "ran", pp: "run", korean: "달리다", mandarin: "跑 (pǎo)", japanese: "走る (hashiru)" },
+            { english: "say", past: "said", pp: "said", korean: "말하다", mandarin: "说 (shuō)", japanese: "言う (iu)" },
+            { english: "see", past: "saw", pp: "seen", korean: "보다", mandarin: "看见 (kàn jiàn)", japanese: "見る (miru)" },
+            { english: "seek", past: "sought", pp: "sought", korean: "찾다, 추구하다", mandarin: "寻求 (xún qiú)", japanese: "探す (sagasu)" }
+        ];
+
+        let currentCardIndex = 0;
+        let shuffledVocabulary = [...vocabulary]; // Clone the original array
+
+        // Get DOM elements
+        const cardContainer = document.getElementById('flashcard-container');
+        
+        // Card Front Elements (Original Verb + Translations)
+        const frontEnglishEl = document.getElementById('front-english-word');
+        const koreanWordEl = document.getElementById('korean-word');
+        const mandarinWordEl = document.getElementById('mandarin-word');
+        const japaneseWordEl = document.getElementById('japanese-word');
+        
+        // Card Back Element (Conjugations) - NEW REFERENCES
+        const backOriginalEl = document.getElementById('back-original');
+        const backPastEl = document.getElementById('back-past');
+        const backPpEl = document.getElementById('back-pp');
+
+        const cardCounterEl = document.getElementById('card-counter');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const shuffleBtn = document.getElementById('shuffle-btn');
+
+        // Function to load card content
+        function loadCard(index) {
+            if (index < 0 || index >= shuffledVocabulary.length) return;
+
+            currentCardIndex = index;
+            const cardData = shuffledVocabulary[index];
+
+            // Card Front (Original Verb + Translations)
+            frontEnglishEl.textContent = cardData.english;
+            koreanWordEl.textContent = cardData.korean;
+            mandarinWordEl.textContent = cardData.mandarin;
+            japaneseWordEl.textContent = cardData.japanese;
+            
+            // Card Back (Conjugations: Original - Past - Participle)
+            // Set content to lowercase as requested
+            backOriginalEl.textContent = cardData.english.toLowerCase();
+            backPastEl.textContent = cardData.past.toLowerCase();
+            backPpEl.textContent = cardData.pp.toLowerCase();
+
+            // Update counter 
+            cardCounterEl.textContent = `Card ${index + 1} / ${shuffledVocabulary.length}`;
+
+            // Reset card to front face
+            cardContainer.classList.remove('is-flipped');
+        }
+
+        // Function to flip card
+        function flipCard() {
+            cardContainer.classList.toggle('is-flipped');
+        }
+
+        // Show next card
+        function nextCard() {
+            const nextIndex = (currentCardIndex + 1) % shuffledVocabulary.length;
+            loadCard(nextIndex);
+        }
+
+        // Show previous card
+        function prevCard() {
+            const prevIndex = (currentCardIndex - 1 + shuffledVocabulary.length) % shuffledVocabulary.length;
+            loadCard(prevIndex);
+        }
+
+        // Shuffle cards (Fisher-Yates algorithm)
+        function shuffleCards() {
+            let m = shuffledVocabulary.length, t, i;
+
+            // While there remain elements to shuffle
+            while (m) {
+                // Pick a remaining element
+                i = Math.floor(Math.random() * m--);
+
+                // And swap it with the current element
+                t = shuffledVocabulary[m];
+                shuffledVocabulary[m] = shuffledVocabulary[i];
+                shuffledVocabulary[i] = t;
+            }
+            
+            // Reset to the first card after shuffling
+            loadCard(0);
+        }
+
+        // Event Listeners
+        cardContainer.addEventListener('click', flipCard);
+        nextBtn.addEventListener('click', nextCard);
+        prevBtn.addEventListener('click', prevCard);
+        shuffleBtn.addEventListener('click', shuffleCards);
+
+        // On page load, shuffle and display the first card
+        shuffleCards();
+        loadCard(0);
+    </script>
+</body>
+</html>
