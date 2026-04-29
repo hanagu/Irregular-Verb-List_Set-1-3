@@ -75,6 +75,15 @@
                 
                 <!-- Card Front (Original Verb + Translations) -->
                 <div class="card-front">
+                    <!-- Audio Button (Front) -->
+                    <button onclick="playFrontTTS(event)" class="absolute top-4 right-4 p-3 bg-blue-200 text-blue-700 rounded-full hover:bg-blue-300 transition shadow-sm z-10" title="Listen to pronunciation">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                        </svg>
+                    </button>
+
                     <div id="card-front-content" class="text-center w-full space-y-4">
                         <p class="text-lg font-medium text-blue-800">Original Verb (Infinitive)</p>
                         <h2 id="front-english-word" class="text-5xl md:text-6xl font-extrabold text-blue-900 break-all">
@@ -93,6 +102,15 @@
 
                 <!-- Card Back (Verb Conjugations - Multi-line, Lowercase) -->
                 <div class="card-back">
+                    <!-- Audio Button (Back) -->
+                    <button onclick="playBackTTS(event)" class="absolute top-4 right-4 p-3 bg-gray-700 text-gray-300 rounded-full hover:bg-gray-600 transition shadow-sm z-10" title="Listen to all forms">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                        </svg>
+                    </button>
+
                     <div id="card-back-content" class="text-center flex flex-col justify-center items-center h-full space-y-4">
                         
                         <!-- Original Verb -->
@@ -316,6 +334,43 @@
             
             // Reset to the first card after shuffling
             loadCard(0);
+        }
+
+        // --- Text-to-Speech (TTS) Functions ---
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop any currently playing audio
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; // Slightly slower for better comprehension
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Text-to-speech is not supported in this browser.");
+            }
+        }
+
+        function playFrontTTS(event) {
+            event.stopPropagation(); // Prevent card from flipping
+            const cardData = shuffledVocabulary[currentCardIndex];
+            // Remove text in parentheses (e.g., "be (am/is/are)" -> "be")
+            const textToRead = cardData.english.replace(/\([^)]*\)/g, '').trim();
+            speakText(textToRead);
+        }
+
+        function playBackTTS(event) {
+            event.stopPropagation(); // Prevent card from flipping
+            const cardData = shuffledVocabulary[currentCardIndex];
+            
+            // Read Original, Past, and Past Participle in sequence
+            const orig = cardData.english.replace(/\([^)]*\)/g, '').trim();
+            const past = cardData.past.replace(/\([^)]*\)/g, '').trim();
+            const pp = cardData.pp.replace(/\([^)]*\)/g, '').trim();
+            
+            let textToRead = orig;
+            if (past) textToRead += ", " + past;
+            if (pp) textToRead += ", " + pp;
+            
+            speakText(textToRead);
         }
 
         // Event Listeners
