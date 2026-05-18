@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Irregular Verb Conjugation Practice</title>
+    <title>Irregular Verb Forms Practice</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -45,7 +45,7 @@
             align-items: center;
             border-radius: 1.5rem; /* 24px */
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            padding: 1.5rem; /* Adjusted padding for more content */
+            padding: 1.5rem; 
         }
 
         .card-front {
@@ -57,23 +57,53 @@
             background-color: #1F2937; /* Dark gray for high contrast */
             color: white;
             transform: rotateY(180deg); /* Pre-rotate the back side */
-            padding: 2rem; /* Ensure generous padding on the back */
+            padding: 2rem; 
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col justify-center items-center p-4">
 
-    <div class="w-full max-w-lg mx-auto">
+    <!-- Smart Copyright & Contact Badge (Hover to expand) -->
+    <div class="fixed top-4 right-4 z-[9999] group flex flex-col items-end font-sans">
+      <!-- Collapsed Badge -->
+      <div class="bg-orange-500 text-white font-bold text-sm sm:text-base px-4 py-2 rounded-full shadow-md cursor-help opacity-90 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        © Ms. Hana
+      </div>
+      
+      <!-- Expanded Info Box -->
+      <div class="mt-2 w-72 sm:w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 text-sm text-slate-600 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-95 group-hover:scale-100 origin-top-right">
+        <h3 class="font-black text-slate-800 text-base mb-2 border-b border-slate-100 pb-2">© Hana (Hyuna) Gu</h3>
+        <ul class="space-y-2 mb-4 text-xs sm:text-sm">
+          <li class="flex items-start gap-2">
+            <span class="text-green-500 font-bold">✓</span>
+            <span>Free for <b>student self-study</b> and practice.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-red-500 font-bold">✗</span>
+            <span><b>Classroom use by other educators</b> requires explicit permission.</span>
+          </li>
+        </ul>
+        <div class="pt-3 border-t border-slate-100 text-xs sm:text-sm bg-slate-50 p-3 rounded-lg">
+          <p class="font-bold text-slate-700 mb-1">Need more levels or topics?</p>
+          <p>Contact for full access & licensing:<br>
+            <a href="mailto:hanagu.teaching@gmail.com" class="text-blue-600 font-bold hover:underline break-all">hanagu.teaching@gmail.com</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full max-w-lg mx-auto mt-6">
+        <!-- 수정된 깔끔한 영어 전용 제목 -->
         <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">
-            Irregular Verb Conjugation Practice
-            <span class="block text-base font-normal text-gray-500">(불규칙 동사의 변형형 연습)</span>
+            Irregular Verb Forms Practice
         </h1>
 
-        <!-- Flashcard Container -->
-        <div id="flashcard-container" class="card-container w-full h-80 md:h-96 rounded-3xl cursor-pointer">
+        <!-- Flashcard Container (Increased height to accommodate definition) -->
+        <div id="flashcard-container" class="card-container w-full h-[480px] md:h-[520px] rounded-3xl cursor-pointer">
             <div id="flashcard-inner" class="card-inner w-full h-full">
                 
-                <!-- Card Front (Original Verb + Translations) -->
+                <!-- Card Front (Original Verb + Def + Translations) -->
                 <div class="card-front">
                     <!-- Audio Button (Front) -->
                     <button onclick="playFrontTTS(event)" class="absolute top-4 right-4 p-3 bg-blue-200 text-blue-700 rounded-full hover:bg-blue-300 transition shadow-sm z-10" title="Listen to pronunciation">
@@ -84,17 +114,38 @@
                         </svg>
                     </button>
 
-                    <div id="card-front-content" class="text-center w-full space-y-4">
-                        <p class="text-lg font-medium text-blue-800">Original Verb (Infinitive)</p>
-                        <h2 id="front-english-word" class="text-5xl md:text-6xl font-extrabold text-blue-900 break-all">
-                            AWAKE
+                    <div id="card-front-content" class="text-center w-full flex flex-col items-center mt-4">
+                        <p class="text-lg font-medium text-blue-800 mb-2">Original Verb (Infinitive)</p>
+                        <!-- 대문자(uppercase) 클래스 제거 및 소문자 스타일(lowercase) 설정 -->
+                        <h2 id="front-english-word" class="text-5xl md:text-6xl font-extrabold text-blue-900 break-all lowercase mb-4">
+                            awake
                         </h2>
-                        <div class="mt-6 space-y-2 text-xl text-left mx-auto max-w-xs">
-                            <p><span class="font-semibold">🇰🇷 Korean:</span> <span id="korean-word"></span></p>
-                            <p><span class="font-semibold">🇨🇳 Mandarin:</span> <span id="mandarin-word"></span></p>
-                            <p><span class="font-semibold">🇯🇵 Japanese:</span> <span id="japanese-word"></span></p>
+
+                        <!-- English Definition Box -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-left w-full max-w-sm shadow-sm mb-5">
+                            <span class="text-[10px] font-black uppercase tracking-wider text-blue-500 block mb-1">English Definition</span>
+                            <p id="english-def" class="text-sm sm:text-base font-semibold text-slate-700 leading-snug">
+                                to stop sleeping and open your eyes
+                            </p>
                         </div>
-                        <p class="text-gray-600 mt-4 text-sm text-center">
+
+                        <!-- 3-Language Translations -->
+                        <div class="space-y-2 text-lg text-left w-full max-w-sm">
+                            <div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-blue-100 shadow-sm">
+                                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 font-bold rounded text-xs w-10 text-center shrink-0">KR</span>
+                                <span id="korean-word" class="font-bold text-slate-700"></span>
+                            </div>
+                            <div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-blue-100 shadow-sm">
+                                <span class="px-2 py-0.5 bg-red-100 text-red-700 font-bold rounded text-xs w-10 text-center shrink-0">CN</span>
+                                <span id="mandarin-word" class="font-bold text-slate-700"></span>
+                            </div>
+                            <div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-blue-100 shadow-sm">
+                                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 font-bold rounded text-xs w-10 text-center shrink-0">JP</span>
+                                <span id="japanese-word" class="font-bold text-slate-700"></span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-blue-500 mt-6 text-sm text-center font-medium">
                             (Click to reveal Simple Past and Past Participle forms)
                         </p>
                     </div>
@@ -111,23 +162,29 @@
                         </svg>
                     </button>
 
-                    <div id="card-back-content" class="text-center flex flex-col justify-center items-center h-full space-y-4">
+                    <div id="card-back-content" class="text-center flex flex-col justify-center items-center h-full space-y-5">
                         
                         <!-- Original Verb -->
-                        <p class="text-lg font-medium text-gray-300">Original Verb</p>
-                        <h2 id="back-original" class="text-3xl md:text-4xl font-extrabold text-white break-all"></h2>
+                        <div class="w-full">
+                            <p class="text-sm font-medium text-gray-400 mb-1">Original Verb</p>
+                            <h2 id="back-original" class="text-3xl md:text-4xl font-extrabold text-white break-words"></h2>
+                        </div>
                         
-                        <div class="h-px w-1/2 bg-gray-600"></div> <!-- Separator -->
+                        <div class="h-px w-2/3 bg-gray-600"></div> <!-- Separator -->
 
                         <!-- Simple Past -->
-                        <p class="text-lg font-medium text-gray-300">Simple Past</p>
-                        <h2 id="back-past" class="text-3xl md:text-4xl font-extrabold text-white break-all"></h2>
+                        <div class="w-full">
+                            <p class="text-sm font-medium text-gray-400 mb-1">Simple Past</p>
+                            <h2 id="back-past" class="text-3xl md:text-4xl font-extrabold text-yellow-400 break-words"></h2>
+                        </div>
                         
-                        <div class="h-px w-1/2 bg-gray-600"></div> <!-- Separator -->
+                        <div class="h-px w-2/3 bg-gray-600"></div> <!-- Separator -->
 
                         <!-- Past Participle -->
-                        <p class="text-lg font-medium text-gray-300">Past Participle</p>
-                        <h2 id="back-pp" class="text-3xl md:text-4xl font-extrabold text-white break-all"></h2>
+                        <div class="w-full">
+                            <p class="text-sm font-medium text-gray-400 mb-1">Past Participle</p>
+                            <h2 id="back-pp" class="text-3xl md:text-4xl font-extrabold text-green-400 break-words"></h2>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,7 +206,7 @@
         </div>
 
         <!-- Shuffle Button -->
-        <div class="mt-4">
+        <div class="mt-4 pb-10">
             <button id="shuffle-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow transition-colors duration-200">
                 Shuffle Cards
             </button>
@@ -157,99 +214,95 @@
     </div>
 
     <script>
-        // Data structure: { english: Original, past: Simple Past, pp: Past Participle, korean: Korean Meaning, mandarin: Chinese (Pinyin), japanese: Japanese (Romanized) }
+        // Data structure: { english, past, pp, korean, mandarin, japanese, def }
         const vocabulary = [
-            { english: "awake", past: "awoke (awaked)", pp: "awoken (awaked)", korean: "깨어나다", mandarin: "醒来 (xǐng lái)", japanese: "目覚める (mezameru)" },
-            { english: "be (am/is/are)", past: "was, were", pp: "been", korean: "이다, 있다", mandarin: "是 (shì)", japanese: "である (de aru)" },
-            { english: "bear", past: "bore", pp: "born, borne", korean: "낳다, 참다", mandarin: "承受 (chéng shòu)", japanese: "耐える (taeru)" },
-            { english: "beat", past: "beat", pp: "beat, beaten", korean: "치다, 이기다", mandarin: "打 (dǎ)", japanese: "打つ (utsu)" },
-            { english: "become", past: "became", pp: "become", korean: "~이 되다", mandarin: "成为 (chéng wéi)", japanese: "になる (ni naru)" },
-            { english: "begin", past: "began", pp: "begun", korean: "시작하다", mandarin: "开始 (kāi shǐ)", japanese: "始める (hajimeru)" },
-            { english: "bend", past: "bent", pp: "bent", korean: "구부리다", mandarin: "弯曲 (wān qū)", japanese: "曲げる (mageru)" },
-            { english: "bet", past: "bet (betted)", pp: "bet (betted)", korean: "내기하다", mandarin: "打赌 (dǎ dǔ)", japanese: "賭ける (kakeru)" },
-            { english: "bite", past: "bit", pp: "bit", korean: "물다", mandarin: "咬 (yǎo)", japanese: "噛む (kamu)" },
-            { english: "bleed", past: "bled", pp: "bled", korean: "피 흘리다", mandarin: "流血 (liú xuè)", japanese: "出血する (shukketsu suru)" },
-            { english: "bless", past: "blest (blessed)", pp: "blest (blessed)", korean: "축복하다", mandarin: "祝福 (zhù fú)", japanese: "祝福する (shukufuku suru)" },
-            { english: "blow", past: "blew", pp: "blown", korean: "불다", mandarin: "吹 (chuī)", japanese: "吹く (fuku)" },
-            { english: "break", past: "broke", pp: "broken", korean: "깨다, 부수다", mandarin: "打破 (dǎ pò)", japanese: "壊す (kowasu)" },
-            { english: "breed", past: "bred", pp: "bred", korean: "기르다, 번식하다", mandarin: "繁殖 (fán zhí)", japanese: "繁殖する (hanshoku suru)" },
-            { english: "bring", past: "brought", pp: "brought", korean: "가져오다", mandarin: "带来 (dài lái)", japanese: "持って来る (motte kuru)" },
-            { english: "broadcast", past: "broadcast (broadcasted)", pp: "broadcast (broadcasted)", korean: "방송하다", mandarin: "广播 (guǎng bō)", japanese: "放送する (hōsō suru)" },
-            { english: "build", past: "built", pp: "built", korean: "짓다, 건설하다", mandarin: "建造 (jiàn zào)", japanese: "建てる (tateru)" },
-            { english: "burn", past: "burnt (burned)", pp: "burnt (burned)", korean: "타다, 태우다", mandarin: "燃烧 (rán shāo)", japanese: "燃やす (moyasu)" },
-            { english: "burst", past: "burst", pp: "burst", korean: "터지다", mandarin: "爆裂 (bào liè)", japanese: "破裂する (haretsu suru)" },
-            { english: "buy", past: "bought", pp: "bought", korean: "사다", mandarin: "买 (mǎi)", japanese: "買う (kau)" },
-            { english: "can", past: "could", pp: "", korean: "~할 수 있다", mandarin: "能 (néng)", japanese: "できる (dekiru)" },
-            { english: "cast", past: "cast", pp: "cast", korean: "던지다, 배역을 정하다", mandarin: "投掷 (tóu zhì)", japanese: "投げる (nageru)" },
-            { english: "catch", past: "caught", pp: "caught", korean: "잡다", mandarin: "抓住 (zhuā zhù)", japanese: "捕まえる (tsukamaeru)" },
-            { english: "choose", past: "chose", pp: "chosen", korean: "선택하다", mandarin: "选择 (xuǎn zé)", japanese: "選ぶ (erabu)" },
-            { english: "come", past: "came", pp: "come", korean: "오다", mandarin: "来 (lái)", japanese: "来る (kuru)" },
-            { english: "cost", past: "cost", pp: "cost", korean: "비용이 들다", mandarin: "花费 (huā fèi)", japanese: "費用がかかる (hiyō ga kakaru)" },
-            { english: "creep", past: "crept", pp: "crept", korean: "살금살금 움직이다", mandarin: "爬行 (pá xíng)", japanese: "忍び寄る (shinobiyoru)" },
-            { english: "cut", past: "cut", pp: "cut", korean: "자르다", mandarin: "切 (qiè)", japanese: "切る (kiru)" },
-            { english: "deal", past: "dealt", pp: "dealt", korean: "다루다, 거래하다", mandarin: "处理 (chǔ lǐ)", japanese: "扱う (atsukau)" },
-            
-            // Irregular Verbs 2
-            { english: "dig", past: "dug", pp: "dug", korean: "파다", mandarin: "挖 (wā)", japanese: "掘る (horu)" },
-            { english: "do", past: "did", pp: "done", korean: "하다", mandarin: "做 (zuò)", japanese: "する (suru)" },
-            { english: "draw", past: "drew", pp: "drawn", korean: "그리다", mandarin: "画 (huà)", japanese: "描く (kaku)" },
-            { english: "dream", past: "dreamt (dreamed)", pp: "dreamt (dreamed)", korean: "꿈꾸다", mandarin: "梦想 (mèng xiǎng)", japanese: "夢を見る (yume o miru)" },
-            { english: "drink", past: "drank", pp: "drunk", korean: "마시다", mandarin: "喝 (hē)", japanese: "飲む (nomu)" },
-            { english: "drive", past: "drove", pp: "driven", korean: "운전하다", mandarin: "驾驶 (jià shǐ)", japanese: "運転する (unten suru)" },
-            { english: "eat", past: "ate", pp: "eaten", korean: "먹다", mandarin: "吃 (chī)", japanese: "食べる (taberu)" },
-            { english: "fall", past: "fell", pp: "fallen", korean: "떨어지다", mandarin: "落下 (luò xià)", japanese: "落ちる (ochiru)" },
-            { english: "feed", past: "fed", pp: "fed", korean: "먹이다", mandarin: "喂养 (wèi yǎng)", japanese: "餌をやる (esa o yaru)" },
-            { english: "feel", past: "felt", pp: "felt", korean: "느끼다", mandarin: "感觉 (gǎn jué)", japanese: "感じる (kanjiru)" },
-            { english: "fight", past: "fought", pp: "fought", korean: "싸우다", mandarin: "打架 (dǎ jià)", japanese: "戦う (tatakau)" },
-            { english: "find", past: "found", pp: "found", korean: "찾다", mandarin: "发现 (fā xiàn)", japanese: "見つける (mitsukeru)" },
-            { english: "flee", past: "fled", pp: "fled", korean: "도망치다", mandarin: "逃跑 (táo pǎo)", japanese: "逃げる (nigeru)" },
-            { english: "fly", past: "flew", pp: "flown", korean: "날다", mandarin: "飞 (fēi)", japanese: "飛ぶ (tobi)" },
-            { english: "forbid", past: "forbade", pp: "forbidden (forbid)", korean: "금지하다", mandarin: "禁止 (jìn zhǐ)", japanese: "禁じる (kinjiru)" },
-            { english: "forecast", past: "forecast (forecasted)", pp: "forecast (forecasted)", korean: "예보하다", mandarin: "预测 (yù cè)", japanese: "予測する (yosoku suru)" },
-            { english: "forget", past: "forgot", pp: "forgotten", korean: "잊다", mandarin: "忘记 (wàng jì)", japanese: "忘れる (wasureru)" },
-            { english: "freeze", past: "froze", pp: "frozen", korean: "얼다", mandarin: "结冰 (jié bīng)", japanese: "凍る (kōru)" },
-            { english: "get", past: "got", pp: "gotten", korean: "얻다, 받다", mandarin: "得到 (dé dào)", japanese: "得る (eru)" },
-            { english: "give", past: "gave", pp: "given", korean: "주다", mandarin: "给 (gěi)", japanese: "与える (ataeru)" },
-            { english: "go", past: "went", pp: "gone", korean: "가다", mandarin: "去 (qù)", japanese: "行く (iku)" },
-            { english: "grow", past: "grew", pp: "grown", korean: "자라다, 성장하다", mandarin: "成长 (chéng zhǎng)", japanese: "成長する (seichō suru)" },
-            { english: "hang", past: "hung", pp: "hung", korean: "걸다", mandarin: "悬挂 (xuán guà)", japanese: "掛ける (kakeru)" },
-            { english: "have", past: "had", pp: "had", korean: "가지다", mandarin: "有 (yǒu)", japanese: "持つ (motsu)" },
-            { english: "hear", past: "heard", pp: "heard", korean: "듣다", mandarin: "听 (tīng)", japanese: "聞く (kiku)" },
-            { english: "hide", past: "hid", pp: "hidden (hid)", korean: "숨기다", mandarin: "隐藏 (yǐn cáng)", japanese: "隠す (kakusu)" },
-            { english: "hit", past: "hit", pp: "hit", korean: "치다", mandarin: "打 (dǎ)", japanese: "打つ (utsu)" },
-            { english: "hold", past: "held", pp: "held", korean: "잡다, 유지하다", mandarin: "抓住 (zhuā zhù)", japanese: "持つ (motsu)" },
-            { english: "hurt", past: "hurt", pp: "hurt", korean: "다치게 하다", mandarin: "伤害 (shāng hài)", japanese: "伤つける (kizutsukeru)" },
-            
-            // Irregular Verbs 3
-            { english: "keep", past: "kept", pp: "kept", korean: "유지하다", mandarin: "保持 (bǎo chí)", japanese: "保つ (tamotsu)" },
-            { english: "know", past: "knew", pp: "known", korean: "알다", mandarin: "知道 (zhī dào)", japanese: "知る (shiru)" },
-            { english: "lay", past: "laid", pp: "laid", korean: "놓다, 깔다", mandarin: "放置 (fàng zhì)", japanese: "置く (oku)" },
-            { english: "lead", past: "led", pp: "led", korean: "이끌다", mandarin: "领导 (lǐng dǎo)", japanese: "導く (michibiku)" },
-            { english: "lean", past: "leant (leaned)", pp: "leant (leaned)", korean: "기울이다", mandarin: "倾斜 (qīng xié)", japanese: "傾ける (katamukeru)" },
-            { english: "leap", past: "leapt (leaped)", pp: "leapt (leaped)", korean: "뛰어넘다", mandarin: "跳跃 (tiào yuè)", japanese: "跳ぶ (tobu)" },
-            { english: "learn", past: "learnt (learned)", pp: "learnt (learned)", korean: "배우다", mandarin: "学习 (xué xí)", japanese: "学ぶ (manabu)" },
-            { english: "leave", past: "left", pp: "left", korean: "떠나다, 남기다", mandarin: "离开 (lí kāi)", japanese: "去る (saru)" },
-            { english: "lend", past: "lent", pp: "lent", korean: "빌려주다", mandarin: "借出 (jiè chū)", japanese: "貸す (kasu)" },
-            { english: "let", past: "let", pp: "let", korean: "허락하다", mandarin: "让 (ràng)", japanese: "させる (saseru)" },
-            { english: "lie", past: "lay", pp: "lain", korean: "눕다", mandarin: "躺 (tǎng)", japanese: "横たわる (yokotawaru)" },
-            { english: "light", past: "lit (lighted)", pp: "lit (lighted)", korean: "불을 붙이다", mandarin: "点燃 (diǎn rán)", japanese: "点ける (tsukeru)" },
-            { english: "lose", past: "lost", pp: "lost", korean: "잃다", mandarin: "失去 (shī qù)", japanese: "失う (ushinau)" },
-            { english: "make", past: "made", pp: "made", korean: "만들다", mandarin: "制造 (zhì zào)", japanese: "作る (tsukuru)" },
-            { english: "may", past: "might", pp: "", korean: "~일지도 모른다", mandarin: "可能 (kě néng)", japanese: "かもしれない (kamoshirenai)" },
-            { english: "mean", past: "meant", pp: "meant", korean: "의미하다", mandarin: "意思 (yì sī)", japanese: "意味する (imi suru)" },
-            { english: "meet", past: "met", pp: "met", korean: "만나다", mandarin: "见面 (jiàn miàn)", japanese: "会う (au)" },
-            { english: "pay", past: "paid", pp: "paid", korean: "지불하다", mandarin: "支付 (zhī fù)", japanese: "支払う (shiharau)" },
-            { english: "put", past: "put", pp: "put", korean: "놓다", mandarin: "放 (fàng)", japanese: "置く (oku)" },
-            { english: "quit", past: "quit (quitted)", pp: "quit (quitted)", korean: "그만두다", mandarin: "退出 (tuì chū)", japanese: "やめる (yameru)" },
-            { english: "read", past: "read", pp: "read", korean: "읽다", mandarin: "阅读 (yuè dú)", japanese: "読む (yomu)" },
-            { english: "rid", past: "rid (ridded)", pp: "rid (ridded)", korean: "제거하다", mandarin: "摆脱 (bǎi tuō)", japanese: "取り除く (torinozoku)" },
-            { english: "ride", past: "rode", pp: "ridden", korean: "타다", mandarin: "骑 (qí)", japanese: "乗る (noru)" },
-            { english: "ring", past: "rang", pp: "rung", korean: "울리다, 전화하다", mandarin: "响铃 (xiǎng líng)", japanese: "鳴らす (narasu)" },
-            { english: "rise", past: "rose", pp: "risen", korean: "오르다", mandarin: "上升 (shàng shēng)", japanese: "上がる (agaru)" },
-            { english: "run", past: "ran", pp: "run", korean: "달리다", mandarin: "跑 (pǎo)", japanese: "走る (hashiru)" },
-            { english: "say", past: "said", pp: "said", korean: "말하다", mandarin: "说 (shuō)", japanese: "言う (iu)" },
-            { english: "see", past: "saw", pp: "seen", korean: "보다", mandarin: "看见 (kàn jiàn)", japanese: "見る (miru)" },
-            { english: "seek", past: "sought", pp: "sought", korean: "찾다, 추구하다", mandarin: "寻求 (xún qiú)", japanese: "探す (sagasu)" }
+            { english: "awake", past: "awoke (awaked)", pp: "awoken (awaked)", korean: "깨어나다", mandarin: "醒来 (xǐng lái)", japanese: "目覚める (mezameru)", def: "to stop sleeping and become conscious" },
+            { english: "be (am/is/are)", past: "was, were", pp: "been", korean: "이다, 있다", mandarin: "是 (shì)", japanese: "である (de aru)", def: "to exist, happen, or live" },
+            { english: "bear", past: "bore", pp: "born, borne", korean: "낳다, 참다", mandarin: "承受 (chéng shòu)", japanese: "耐える (taeru)", def: "to carry a weight or endure something difficult" },
+            { english: "beat", past: "beat", pp: "beat, beaten", korean: "치다, 이기다", mandarin: "打 (dǎ)", japanese: "打つ (utsu)", def: "to hit repeatedly or win against someone" },
+            { english: "become", past: "became", pp: "become", korean: "~이 되다", mandarin: "成为 (chéng wéi)", japanese: "技能になる (ni naru)", def: "to begin to be something new" },
+            { english: "begin", past: "began", pp: "begun", korean: "시작하다", mandarin: "开始 (kāi shǐ)", japanese: "始める (hajimeru)", def: "to start doing something" },
+            { english: "bend", past: "bent", pp: "bent", korean: "구부리다", mandarin: "弯曲 (wān qū)", japanese: "曲げる (mageru)", def: "to shape something into a curve or angle" },
+            { english: "bet", past: "bet (betted)", pp: "bet (betted)", korean: "내기하다", mandarin: "打赌 (dǎ dǔ)", japanese: "賭ける (kakeru)", def: "to risk money or make a guess on a result" },
+            { english: "bite", past: "bit", pp: "bit", korean: "물다", mandarin: "咬 (yǎo)", japanese: "噛む (kamu)", def: "to use teeth to cut into something" },
+            { english: "bleed", past: "bled", pp: "bled", korean: "피 흘리다", mandarin: "流血 (liú xuè)", japanese: "出血する (shukketsu suru)", def: "to lose blood from the body" },
+            { english: "bless", past: "blest (blessed)", pp: "blest (blessed)", korean: "축복하다", mandarin: "祝福 (zhù fú)", japanese: "祝福する (shukufuku suru)", def: "to ask for God's favor and protection" },
+            { english: "blow", past: "blew", pp: "blown", korean: "불다", mandarin: "吹 (chuī)", japanese: "吹く (fuku)", def: "to move air or wind forcefully" },
+            { english: "break", past: "broke", pp: "broken", korean: "깨다, 부수다", mandarin: "打破 (dǎ pò)", japanese: "壊す (kowasu)", def: "to separate into pieces or stop working" },
+            { english: "breed", past: "bred", pp: "bred", korean: "기르다, 번식하다", mandarin: "繁殖 (fán zhí)", japanese: "繁殖する (hanshoku suru)", def: "to produce baby animals or cause something" },
+            { english: "bring", past: "brought", pp: "brought", korean: "가져오다", mandarin: "带来 (dài lái)", japanese: "持って来る (motte kuru)", def: "to take someone or something with you to a place" },
+            { english: "broadcast", past: "broadcast (broadcasted)", pp: "broadcast (broadcasted)", korean: "방송하다", mandarin: "广播 (guǎng bō)", japanese: "放送する (hōsō suru)", def: "to send out a TV or radio program" },
+            { english: "build", past: "built", pp: "built", korean: "짓다, 건설하다", mandarin: "建造 (jiàn zào)", japanese: "建てる (tateru)", def: "to make something by putting parts together" },
+            { english: "burn", past: "burnt (burned)", pp: "burnt (burned)", korean: "타다, 태우다", mandarin: "燃烧 (rán shāo)", japanese: "燃やす (moyasu)", def: "to be on fire or get hurt by heat" },
+            { english: "burst", past: "burst", pp: "burst", korean: "터지다", mandarin: "爆裂 (bào liè)", japanese: "破裂する (haretsu suru)", def: "to break open suddenly and violently" },
+            { english: "buy", past: "bought", pp: "bought", korean: "사다", mandarin: "买 (mǎi)", japanese: "買う (kau)", def: "to get something by paying money for it" },
+            { english: "can", past: "could", pp: "", korean: "~할 수 있다", mandarin: "能 (néng)", japanese: "できる (dekiru)", def: "to be able to do something or have permission" },
+            { english: "cast", past: "cast", pp: "cast", korean: "던지다, 배역을 정하다", mandarin: "投掷 (tóu zhì)", japanese: "投げる (nageru)", def: "to throw something, or give a role to an actor" },
+            { english: "catch", past: "caught", pp: "caught", korean: "잡다", mandarin: "抓住 (zhuā zhù)", japanese: "捕まえる (tsukamaeru)", def: "to grab and hold something that is moving" },
+            { english: "choose", past: "chose", pp: "chosen", korean: "선택하다", mandarin: "选择 (xuǎn zé)", japanese: "選ぶ (erabu)", def: "to pick one thing instead of another" },
+            { english: "come", past: "came", pp: "come", korean: "오다", mandarin: "来 (lái)", japanese: "来る (kuru)", def: "to move toward a place or a person" },
+            { english: "cost", past: "cost", pp: "cost", korean: "비용이 들다", mandarin: "花费 (huā fèi)", japanese: "費用がかかる (hiyō ga kakaru)", def: "to require a certain amount of money to buy" },
+            { english: "creep", past: "crept", pp: "crept", korean: "살금살금 움직이다", mandarin: "爬行 (pá xíng)", japanese: "忍び寄る (shinobiyoru)", def: "to move slowly, quietly, and carefully" },
+            { english: "cut", past: "cut", pp: "cut", korean: "자르다", mandarin: "切 (qiè)", japanese: "切る (kiru)", def: "to slice or divide something using a sharp tool" },
+            { english: "deal", past: "dealt", pp: "dealt", korean: "다루다, 거래하다", mandarin: "处理 (chǔ lǐ)", japanese: "扱う (atsukau)", def: "to give out cards or do business with someone" },
+            { english: "dig", past: "dug", pp: "dug", korean: "파다", mandarin: "挖 (wā)", japanese: "掘る (horu)", def: "to make a hole in the ground" },
+            { english: "do", past: "did", pp: "done", korean: "하다", mandarin: "做 (zuò)", japanese: "する (suru)", def: "to perform an action or finish a task" },
+            { english: "draw", past: "drew", pp: "drawn", korean: "그리다", mandarin: "画 (huà)", japanese: "描く (kaku)", def: "to make a picture with a pen or pencil" },
+            { english: "dream", past: "dreamt (dreamed)", pp: "dreamt (dreamed)", korean: "꿈꾸다", mandarin: "梦想 (mèng xiǎng)", japanese: "夢を見る (yume o miru)", def: "to see pictures in your mind while sleeping" },
+            { english: "drink", past: "drank", pp: "drunk", korean: "마시다", mandarin: "喝 (hē)", japanese: "飲む (nomu)", def: "to take liquid into your mouth and swallow" },
+            { english: "drive", past: "drove", pp: "driven", korean: "운전하다", mandarin: "驾驶 (jià shǐ)", japanese: "運転する (unten suru)", def: "to control and move a car or vehicle" },
+            { english: "eat", past: "ate", pp: "eaten", korean: "먹다", mandarin: "吃 (chī)", japanese: "食べる (taberu)", def: "to put food into your mouth, chew, and swallow" },
+            { english: "fall", past: "fell", pp: "fallen", korean: "떨어지다", mandarin: "落下 (luò xià)", japanese: "落ちる (ochiru)", def: "to drop down from a higher place" },
+            { english: "feed", past: "fed", pp: "fed", korean: "먹이다", mandarin: "喂养 (wèi yǎng)", japanese: "餌をやる (esa o yaru)", def: "to give food to a person or an animal" },
+            { english: "feel", past: "felt", pp: "felt", korean: "느끼다", mandarin: "感觉 (gǎn jué)", japanese: "感じる (kanjiru)", def: "to experience an emotion or touch something" },
+            { english: "fight", past: "fought", pp: "fought", korean: "싸우다", mandarin: "打架 (dǎ jià)", japanese: "戦う (tatakau)", def: "to use physical force to hurt someone or argue" },
+            { english: "find", past: "found", pp: "found", korean: "찾다", mandarin: "发现 (fā xiàn)", japanese: "見つける (mitsukeru)", def: "to discover something you were looking for" },
+            { english: "flee", past: "fled", pp: "fled", korean: "도망치다", mandarin: "逃跑 (táo pǎo)", japanese: "逃げる (nigeru)", def: "to run away from danger very quickly" },
+            { english: "fly", past: "flew", pp: "flown", korean: "날다", mandarin: "飞 (fēi)", japanese: "飛ぶ (tobi)", def: "to move through the air like a bird or plane" },
+            { english: "forbid", past: "forbade", pp: "forbidden (forbid)", korean: "금지하다", mandarin: "禁止 (jìn zhǐ)", japanese: "禁じる (kinjiru)", def: "to order someone not to do something" },
+            { english: "forecast", past: "forecast (forecasted)", pp: "forecast (forecasted)", korean: "예보하다", mandarin: "预测 (yù cè)", japanese: "予測する (yosoku suru)", def: "to predict what the weather or future will be" },
+            { english: "forget", past: "forgot", pp: "forgotten", korean: "잊다", mandarin: "忘记 (wàng jì)", japanese: "忘れる (wasureru)", def: "to not remember something" },
+            { english: "freeze", past: "froze", pp: "frozen", korean: "얼다", mandarin: "结冰 (jié bīng)", japanese: "凍る (kōru)", def: "to turn into ice because of extreme cold" },
+            { english: "get", past: "got", pp: "gotten", korean: "얻다, 받다", mandarin: "得到 (dé dào)", japanese: "得る (eru)", def: "to receive, obtain, or buy something" },
+            { english: "give", past: "gave", pp: "given", korean: "주다", mandarin: "给 (gěi)", japanese: "与える (ataeru)", def: "to hand something to someone else freely" },
+            { english: "go", past: "went", pp: "gone", korean: "가다", mandarin: "去 (qù)", japanese: "行く (iku)", def: "to move or travel to another place" },
+            { english: "grow", past: "grew", pp: "grown", korean: "자라다, 성장하다", mandarin: "成长 (chéng zhǎng)", japanese: "成長する (seichō suru)", def: "to become bigger, taller, or older over time" },
+            { english: "hang", past: "hung", pp: "hung", korean: "걸다", mandarin: "悬挂 (xuán guà)", japanese: "掛ける (kakeru)", def: "to attach something at the top so it drops down" },
+            { english: "have", past: "had", pp: "had", korean: "가지다", mandarin: "有 (yǒu)", japanese: "持つ (motsu)", def: "to own, hold, or possess something" },
+            { english: "hear", past: "heard", pp: "heard", korean: "듣다", mandarin: "听 (tīng)", japanese: "聞く (kiku)", def: "to notice sounds with your ears" },
+            { english: "hide", past: "hid", pp: "hidden (hid)", korean: "숨기다", mandarin: "隐藏 (yǐn cáng)", japanese: "隠す (kakusu)", def: "to put something in a place where it can't be seen" },
+            { english: "hit", past: "hit", pp: "hit", korean: "치다", mandarin: "打 (dǎ)", japanese: "打つ (utsu)", def: "to touch someone or something with sudden force" },
+            { english: "hold", past: "held", pp: "held", korean: "잡다, 유지하다", mandarin: "抓住 (zhuā zhù)", japanese: "持つ (motsu)", def: "to carry or support something in your hands" },
+            { english: "hurt", past: "hurt", pp: "hurt", korean: "다치게 하다", mandarin: "伤害 (shāng hài)", japanese: "伤つける (kizutsukeru)", def: "to cause pain or injury to someone or yourself" },
+            { english: "keep", past: "kept", pp: "kept", korean: "유지하다", mandarin: "保持 (bǎo chí)", japanese: "保つ (tamotsu)", def: "to continue having something and not give it away" },
+            { english: "know", past: "knew", pp: "known", korean: "알다", mandarin: "知道 (zhī dào)", japanese: "知る (shiru)", def: "to have information or facts in your mind" },
+            { english: "lay", past: "laid", pp: "laid", korean: "놓다, 깔다", mandarin: "放置 (fàng zhì)", japanese: "置く (oku)", def: "to put someone or something down carefully" },
+            { english: "lead", past: "led", pp: "led", korean: "이끌다", mandarin: "领导 (lǐng dǎo)", japanese: "導く (michibiku)", def: "to guide someone to a place or be in charge" },
+            { english: "lean", past: "leant (leaned)", pp: "leant (leaned)", korean: "기울이다", mandarin: "倾斜 (qīng xié)", japanese: "傾ける (katamukeru)", def: "to bend your body or rest against something" },
+            { english: "leap", past: "leapt (leaped)", pp: "leapt (leaped)", korean: "뛰어넘다", mandarin: "跳跃 (tiào yuè)", japanese: "跳ぶ (tobu)", def: "to jump a large distance or jump high in the air" },
+            { english: "learn", past: "learnt (learned)", pp: "learnt (learned)", korean: "배우다", mandarin: "学习 (xué xí)", japanese: "学ぶ (manabu)", def: "to get new knowledge or skill by studying" },
+            { english: "leave", past: "left", pp: "left", korean: "떠나다, 남기다", mandarin: "离开 (lí kāi)", japanese: "去る (saru)", def: "to go away from a person or a place" },
+            { english: "lend", past: "lent", pp: "lent", korean: "빌려주다", mandarin: "借出 (jiè chū)", japanese: "貸す (kasu)", def: "to let someone use your thing for a short time" },
+            { english: "let", past: "let", pp: "let", korean: "허락하다", mandarin: "让 (ràng)", japanese: "させる (saseru)", def: "to allow or give permission to someone" },
+            { english: "lie", past: "lay", pp: "lain", korean: "눕다", mandarin: "躺 (tǎng)", japanese: "横たわる (yokotawaru)", def: "to rest your body flat on a bed or ground" },
+            { english: "light", past: "lit (lighted)", pp: "lit (lighted)", korean: "불을 붙이다", mandarin: "点燃 (diǎn rán)", japanese: "点ける (tsukeru)", def: "to start a fire or turn on a lamp" },
+            { english: "lose", past: "lost", pp: "lost", korean: "잃다", mandarin: "失去 (shī qù)", japanese: "失う (ushinau)", def: "to misplace something or fail to win a game" },
+            { english: "make", past: "made", pp: "made", korean: "만들다", mandarin: "制造 (zhì zào)", japanese: "作る (tsukuru)", def: "to create, build, or produce something" },
+            { english: "may", past: "might", pp: "", korean: "~일지도 모른다", mandarin: "可能 (kě néng)", japanese: "かもしれない (kamoshirenai)", def: "used to ask for permission or express possibility" },
+            { english: "mean", past: "meant", pp: "meant", korean: "의미하다", mandarin: "意思 (yì sī)", japanese: "意味する (imi suru)", def: "to express a specific thought, idea, or meaning" },
+            { english: "meet", past: "met", pp: "met", korean: "만나다", mandarin: "见面 (jiàn miàn)", japanese: "会う (au)", def: "to come together with someone in the same place" },
+            { english: "pay", past: "paid", pp: "paid", korean: "지불하다", mandarin: "支付 (zhī fù)", japanese: "支払う (shiharau)", def: "to give money for goods or work done" },
+            { english: "put", past: "put", pp: "put", korean: "놓다", mandarin: "放 (fàng)", japanese: "置く (oku)", def: "to place something in a specific spot" },
+            { english: "quit", past: "quit (quitted)", pp: "quit (quitted)", korean: "그만두다", mandarin: "退出 (tuì chū)", japanese: "やめる (yameru)", def: "to stop doing something or leave a job" },
+            { english: "read", past: "read", pp: "read", korean: "읽다", mandarin: "阅读 (yuè dú)", japanese: "読む (yomu)", def: "to look at and understand written words" },
+            { english: "rid", past: "rid (ridded)", pp: "rid (ridded)", korean: "제거하다", mandarin: "摆脱 (bǎi tuō)", japanese: "取り除く (torinozoku)", def: "to make yourself free from something bad" },
+            { english: "ride", past: "rode", pp: "ridden", korean: "타다", mandarin: "骑 (qí)", japanese: "乗る (noru)", def: "to sit on a bike, horse, or train and travel" },
+            { english: "ring", past: "rang", pp: "rung", korean: "울리다, 전화하다", mandarin: "响铃 (xiǎng líng)", japanese: "鳴らす (narasu)", def: "to make a clear sound like a bell or phone" },
+            { english: "rise", past: "rose", pp: "risen", korean: "오르다", mandarin: "上升 (shàng shēng)", japanese: "上がる (agaru)", def: "to move upwards or to stand up" },
+            { english: "run", past: "ran", pp: "run", korean: "달리다", mandarin: "跑 (pǎo)", japanese: "走る (hashiru)", def: "to move your legs very quickly" },
+            { english: "say", past: "said", pp: "said", korean: "말하다", mandarin: "说 (shuō)", japanese: "言 (yán)", def: "to speak words to communicate a thought" },
+            { english: "see", past: "saw", pp: "seen", korean: "보다", mandarin: "看见 (kàn jiàn)", japanese: "見る (miru)", def: "to notice or look at things using your eyes" },
+            { english: "seek", past: "sought", pp: "sought", korean: "찾다, 추구하다", mandarin: "寻求 (xún qiú)", japanese: "探す (sagasu)", def: "to look for or try to find something" }
         ];
 
         let currentCardIndex = 0;
@@ -258,13 +311,14 @@
         // Get DOM elements
         const cardContainer = document.getElementById('flashcard-container');
         
-        // Card Front Elements (Original Verb + Translations)
+        // Card Front Elements
         const frontEnglishEl = document.getElementById('front-english-word');
+        const englishDefEl = document.getElementById('english-def');
         const koreanWordEl = document.getElementById('korean-word');
         const mandarinWordEl = document.getElementById('mandarin-word');
         const japaneseWordEl = document.getElementById('japanese-word');
         
-        // Card Back Element (Conjugations) - NEW REFERENCES
+        // Card Back Element (Conjugations)
         const backOriginalEl = document.getElementById('back-original');
         const backPastEl = document.getElementById('back-past');
         const backPpEl = document.getElementById('back-pp');
@@ -281,14 +335,14 @@
             currentCardIndex = index;
             const cardData = shuffledVocabulary[index];
 
-            // Card Front (Original Verb + Translations)
+            // Card Front
             frontEnglishEl.textContent = cardData.english;
+            englishDefEl.textContent = cardData.def;
             koreanWordEl.textContent = cardData.korean;
             mandarinWordEl.textContent = cardData.mandarin;
             japaneseWordEl.textContent = cardData.japanese;
             
             // Card Back (Conjugations: Original - Past - Participle)
-            // Set content to lowercase as requested
             backOriginalEl.textContent = cardData.english.toLowerCase();
             backPastEl.textContent = cardData.past.toLowerCase();
             backPpEl.textContent = cardData.pp.toLowerCase();
@@ -321,28 +375,23 @@
         function shuffleCards() {
             let m = shuffledVocabulary.length, t, i;
 
-            // While there remain elements to shuffle
             while (m) {
-                // Pick a remaining element
                 i = Math.floor(Math.random() * m--);
-
-                // And swap it with the current element
                 t = shuffledVocabulary[m];
                 shuffledVocabulary[m] = shuffledVocabulary[i];
                 shuffledVocabulary[i] = t;
             }
             
-            // Reset to the first card after shuffling
             loadCard(0);
         }
 
         // --- Text-to-Speech (TTS) Functions ---
         function speakText(text) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Stop any currently playing audio
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'en-US';
-                utterance.rate = 0.85; // Slightly slower for better comprehension
+                utterance.rate = 0.85; 
                 window.speechSynthesis.speak(utterance);
             } else {
                 alert("Text-to-speech is not supported in this browser.");
@@ -352,7 +401,6 @@
         function playFrontTTS(event) {
             event.stopPropagation(); // Prevent card from flipping
             const cardData = shuffledVocabulary[currentCardIndex];
-            // Remove text in parentheses (e.g., "be (am/is/are)" -> "be")
             const textToRead = cardData.english.replace(/\([^)]*\)/g, '').trim();
             speakText(textToRead);
         }
@@ -361,7 +409,6 @@
             event.stopPropagation(); // Prevent card from flipping
             const cardData = shuffledVocabulary[currentCardIndex];
             
-            // Read Original, Past, and Past Participle in sequence
             const orig = cardData.english.replace(/\([^)]*\)/g, '').trim();
             const past = cardData.past.replace(/\([^)]*\)/g, '').trim();
             const pp = cardData.pp.replace(/\([^)]*\)/g, '').trim();
@@ -383,12 +430,5 @@
         shuffleCards();
         loadCard(0);
     </script>
- <!-- Watermark: Ms. Hana's ELL Class -->
-
-  <div class="fixed top-4 right-4 text-slate-300/60 font-bold text-sm sm:text-base tracking-widest pointer-events-none select-none z-[9999]">
-
-    Ms. Hana's ELL Class
-
-  </div>
 </body>
 </html>
